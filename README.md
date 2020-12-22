@@ -2,7 +2,7 @@
 
 In this lesson I learned to render an editable input in the admin pannel through the edit method
 
-In order to store the value I had to create an custom attribute and save its value through a custom function (which HAS TO be in the edit method)
+In order to store the value I had to create a custom attribute and save its value through a custom function (which HAS TO be in the edit method)
 
 The way we retrieve and modify the author information is through the attributes props
 
