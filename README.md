@@ -1,7 +1,7 @@
-# Gutenberg from Scratch: How to Create a Custom Block | Lesson 2
+# Gutenberg from Scratch: How to Create a Custom Block
 
-Teaches how to create a block that doesn't render anything yet.
+This video serie is the one that I used to get used to Gutenberg blocks and their configuration
 
-## Link to tutorial
+## Link to Serie
 
-[Click here](https://www.youtube.com/watch?v=2CGFLwSoDbY&list=PLriKzYyLb28lHhftzU7Z_DJ32mvLy4KKH&index=3&ab_channel=AlessandroCastellani)
+[Click here](https://www.youtube.com/playlist?list=PLriKzYyLb28lHhftzU7Z_DJ32mvLy4KKH)
