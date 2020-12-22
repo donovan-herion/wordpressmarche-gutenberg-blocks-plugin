@@ -11,7 +11,9 @@ registerBlockType("wpmarche/sample-block", {
 
   // custom functions
 
-  edit() {},
+  edit() {
+    return <div>Hello World</div>;
+  },
 
   save() {},
 });

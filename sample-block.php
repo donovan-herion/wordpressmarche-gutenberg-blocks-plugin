@@ -4,7 +4,7 @@
 
 function wpmarche_gutenberg_blocks()
 {
-    wp_register_script('sample-block-js', plugins_url('index.js', __FILE__), array('wp-blocks'));
+    wp_register_script('sample-block-js', plugins_url('build/index.js', __FILE__), array('wp-blocks'));
 
     register_block_type('wpmarche/sample-block', array(
         'editor_script' => 'sample-block-js'

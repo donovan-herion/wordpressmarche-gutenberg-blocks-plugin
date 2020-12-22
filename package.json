@@ -1,0 +1,25 @@
+{
+  "name": "sample-block",
+  "version": "1.0.0",
+  "description": "Configuration of the compiling tools using npm",
+  "main": "index.js",
+  "scripts": {
+    "build-scripts" : "wp-scripts build",
+    "start-build" : "wp-scripts start"
+
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/donovan-herion/wordpressmarche-gutenberg-blocks-plugin.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/donovan-herion/wordpressmarche-gutenberg-blocks-plugin/issues"
+  },
+  "homepage": "https://github.com/donovan-herion/wordpressmarche-gutenberg-blocks-plugin#readme",
+  "devDependencies": {
+    "@wordpress/scripts": "12.6.0"
+  }
+}

@@ -1,6 +1,34 @@
-# Gutenberg from Scratch: How to Create a Custom Block | Lesson 3
+# Gutenberg from Scratch: NPM Build Setup for Gutenberg | Lesson 3
 
-Using npm with gutenberg
+In my plugin folder i ran the following command to create a package.json file and allow download of packages through npm
+
+```
+npm init -y
+```
+
+I then install this package from wordpress that allows me to compile my code
+
+```
+npm i --save-dev --save-exact @wordpress/scripts
+```
+
+In order to compile my js file I need to follow the file structure used in the wordpress/scripts webpack config.
+
+My js file has to be named index.js and be placed in a src folder
+
+To compile my code i use the following commands (that i previously added to the scripts of my package.json)
+
+```
+npm run build-scripts
+```
+
+or the watcher method
+
+```
+npm run start-build
+```
+
+I also need my newly built js file to be linked to my php plugin file.
 
 ## Link to tutorial
 
