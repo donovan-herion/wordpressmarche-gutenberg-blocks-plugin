@@ -7,13 +7,32 @@ registerBlockType("wpmarche/sample-block", {
   category: "layout",
 
   // custom attributes
-  attributes: {},
-
-  // custom functions
-
-  edit() {
-    return <div>Hello World</div>;
+  attributes: {
+    author: {
+      type: "string",
+    },
   },
 
-  save() {},
+  edit({ attributes, setAttributes }) {
+    // custom functions
+    const changeAuthorAttributes = (event) => {
+      setAttributes({ author: event.target.value });
+    };
+
+    return (
+      <input
+        type="text"
+        value={attributes.author}
+        onChange={changeAuthorAttributes}
+      />
+    );
+  },
+
+  save({ attributes }) {
+    return (
+      <p>
+        Author Name : <i>{attributes.author}</i>
+      </p>
+    );
+  },
 });

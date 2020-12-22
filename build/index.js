@@ -105,12 +105,32 @@ registerBlockType("wpmarche/sample-block", {
   icon: "format-image",
   category: "layout",
   // custom attributes
-  attributes: {},
-  // custom functions
-  edit: function edit() {
-    return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", null, "Hello World");
+  attributes: {
+    author: {
+      type: "string"
+    }
   },
-  save: function save() {}
+  edit: function edit(_ref) {
+    var attributes = _ref.attributes,
+        setAttributes = _ref.setAttributes;
+
+    // custom functions
+    var changeAuthorAttributes = function changeAuthorAttributes(event) {
+      setAttributes({
+        author: event.target.value
+      });
+    };
+
+    return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("input", {
+      type: "text",
+      value: attributes.author,
+      onChange: changeAuthorAttributes
+    });
+  },
+  save: function save(_ref2) {
+    var attributes = _ref2.attributes;
+    return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("p", null, "Author Name : ", Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("i", null, attributes.author));
+  }
 });
 
 /***/ }),
