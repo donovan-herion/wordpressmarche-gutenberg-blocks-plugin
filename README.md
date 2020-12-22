@@ -16,7 +16,7 @@ I also added a jsx expression to my edit method that returns a div with plain te
 
 I then install this package from wordpress that allows me to compile my code
 
-````
+```
 
 npm i --save-dev --save-exact @wordpress/scripts
 
@@ -47,5 +47,7 @@ I also need my newly built js file to be linked to my php plugin file.
 ## Link to tutorial
 
 [Click here](https://www.youtube.com/watch?v=jwIpsW3UoUI&list=PLriKzYyLb28lHhftzU7Z_DJ32mvLy4KKH&index=4&t=17s&ab_channel=AlessandroCastellani)
+
 ```
-````
+
+```
