@@ -4,9 +4,8 @@
   "description": "Configuration of the compiling tools using npm",
   "main": "index.js",
   "scripts": {
-    "build-scripts" : "wp-scripts build",
-    "start-build" : "wp-scripts start"
-
+    "build-scripts": "wp-scripts build",
+    "start-build": "wp-scripts start"
   },
   "repository": {
     "type": "git",
@@ -21,5 +20,8 @@
   "homepage": "https://github.com/donovan-herion/wordpressmarche-gutenberg-blocks-plugin#readme",
   "devDependencies": {
     "@wordpress/scripts": "12.6.0"
+  },
+  "dependencies": {
+    "axios": "^0.21.1"
   }
 }

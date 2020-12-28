@@ -1,3 +1,5 @@
+const { default: MyComponent } = require("./components/MyComponent");
+
 const { registerBlockType } = wp.blocks;
 
 registerBlockType("wpmarche/sample-block", {
@@ -20,10 +22,9 @@ registerBlockType("wpmarche/sample-block", {
     };
 
     return (
-      <input
-        type="text"
-        value={attributes.author}
-        onChange={changeAuthorAttributes}
+      <MyComponent
+        attributes={attributes}
+        changeAuthorAttributes={changeAuthorAttributes}
       />
     );
   },
