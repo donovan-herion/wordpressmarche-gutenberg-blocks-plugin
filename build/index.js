@@ -102,8 +102,11 @@ var registerBlockType = wp.blocks.registerBlockType;
 var _wp$editor = wp.editor,
     RichText = _wp$editor.RichText,
     InspectorControls = _wp$editor.InspectorControls,
-    ColorPalette = _wp$editor.ColorPalette;
-var PanelBody = wp.components.PanelBody;
+    ColorPalette = _wp$editor.ColorPalette,
+    MediaUpload = _wp$editor.MediaUpload;
+var _wp$components = wp.components,
+    PanelBody = _wp$components.PanelBody,
+    IconButton = _wp$components.IconButton;
 registerBlockType("wpmarche/sample-block", {
   title: "Sample Block",
   description: "Block to generate static content",
@@ -128,6 +131,10 @@ registerBlockType("wpmarche/sample-block", {
     bodyColor: {
       type: "string",
       default: "black"
+    },
+    backgroundImage: {
+      type: "string",
+      default: null
     }
   },
   edit: function edit(_ref) {
@@ -136,7 +143,8 @@ registerBlockType("wpmarche/sample-block", {
     var title = attributes.title,
         body = attributes.body,
         titleColor = attributes.titleColor,
-        bodyColor = attributes.bodyColor; // custom functions
+        bodyColor = attributes.bodyColor,
+        backgroundImage = attributes.backgroundImage; // custom functions
 
     function onChangeTitle(newTitle) {
       setAttributes({
@@ -162,6 +170,12 @@ registerBlockType("wpmarche/sample-block", {
       });
     }
 
+    function onSelectImage(newImage) {
+      setAttributes({
+        backgroundImage: newImage.sizes.full.url
+      });
+    }
+
     return [Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(InspectorControls, {
       style: {
         marginBottom: "40px"
@@ -174,6 +188,20 @@ registerBlockType("wpmarche/sample-block", {
     }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("p", null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("strong", null, "Select a Body color:")), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(ColorPalette, {
       value: bodyColor,
       onChange: onBodyColorChange
+    })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelBody, {
+      title: "Background Image Settings"
+    }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("p", null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("strong", null, "Select a Background Image:")), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(MediaUpload, {
+      onSelect: onSelectImage,
+      type: "image",
+      value: backgroundImage,
+      render: function render(_ref2) {
+        var open = _ref2.open;
+        return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(IconButton, {
+          className: "editor-media-placeholder__button is-button is-default is-large",
+          icon: "upload",
+          onClick: open
+        }, "Background Image");
+      }
     }))), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
       class: "block-container"
     }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(RichText, {
@@ -196,8 +224,8 @@ registerBlockType("wpmarche/sample-block", {
       }
     }))];
   },
-  save: function save(_ref2) {
-    var attributes = _ref2.attributes;
+  save: function save(_ref3) {
+    var attributes = _ref3.attributes;
     var title = attributes.title,
         body = attributes.body,
         titleColor = attributes.titleColor;

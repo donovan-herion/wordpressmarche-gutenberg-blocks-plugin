@@ -1,55 +1,50 @@
-# Gutenberg from Scratch: How to Use the ColorPalette Element | Lesson 6
+# Gutenberg from Scratch: Create a Custom Media Uploader | Lesson 7
 
-Added a few dependencies
+In this lesson we simply added a media loader on the block editing sidebar through a new panelbody
 
-```js
-const { RichText, InspectorControls, ColorPalette } = wp.editor;
-const { PanelBody } = wp.components;
-
-//has to be added in php dependency array too
-```
-
-added a few states to manage color from block editing sidebar through the ColorPalette component
-
-The InspectorControls has to be added together with the PanelBody to display the ColorPalette
+this is what we changed since last lesson
 
 ```js
- return [
-      <InspectorControls style={{ marginBottom: "40px" }}>
-        <PanelBody title={"Font Color Settings"}>
-          <p>
-            <strong>Select a Title color:</strong>
-          </p>
-          <ColorPalette value={titleColor} onChange={onTitleColorChange} />
-          <p>
-            <strong>Select a Body color:</strong>
-          </p>
-          <ColorPalette value={bodyColor} onChange={onBodyColorChange} />
-        </PanelBody>
-      </InspectorControls>,
-      <div class="block-container">
-        <RichText
-          key="editable"
-          tagName="h2"
-          placeholder="Your block Title"
-          value={title}
-          onChange={onChangeTitle}
-          style={{ color: titleColor }}
-        />
-        <RichText
-          key="editable"
-          tagName="p"
-          placeholder="Your block Description"
-          value={body}
-          onChange={onChangeBody}
-          style={{ color: bodyColor }}
-        />
-      </div>,
-    ];
-  },
+const { previousOnes... + MediaUpload } = wp.editor;
 
+//custom attributes
+backgroundImage: {
+      type: "string",
+      default: null,
+    }
+
+//loads the state in edit function
+const { previousOnes... + backgroundImage } = attributes;
+
+
+//added onChange functions
+function onSelectImage(newImage) {
+  setAttributes({ backgroundImage: newImage.sizes.full.url });
+}
+
+//added one panel body
+
+   <PanelBody title={"Background Image Settings"}>
+          <p>
+            <strong>Select a Background Image:</strong>
+          </p>
+          <MediaUpload
+          onSelect={onSelectImage}
+          type="image"
+          value={backgroundImage}
+          render={({ open }) => (
+            <IconButton
+              className="editor-media-placeholder__button is-button is-default is-large"
+              icon="upload"
+              onClick={open}
+            >
+              Background Image
+            </IconButton>
+          )}
+        />
+    </PanelBody>
 ```
 
 ## Link to tutorial
 
-[Click here](https://www.youtube.com/watch?v=wj6HkXMplNY&list=PLriKzYyLb28lHhftzU7Z_DJ32mvLy4KKH&index=7&ab_channel=AlessandroCastellani)
+[Click here](https://www.youtube.com/watch?v=QHpUELUrwpo&list=PLriKzYyLb28lHhftzU7Z_DJ32mvLy4KKH&index=8&ab_channel=AlessandroCastellani)

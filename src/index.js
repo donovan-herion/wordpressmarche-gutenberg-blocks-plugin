@@ -1,6 +1,6 @@
 const { registerBlockType } = wp.blocks;
-const { RichText, InspectorControls, ColorPalette } = wp.editor;
-const { PanelBody } = wp.components;
+const { RichText, InspectorControls, ColorPalette, MediaUpload } = wp.editor;
+const { PanelBody, IconButton } = wp.components;
 
 registerBlockType("wpmarche/sample-block", {
   title: "Sample Block",
@@ -28,10 +28,14 @@ registerBlockType("wpmarche/sample-block", {
       type: "string",
       default: "black",
     },
+    backgroundImage: {
+      type: "string",
+      default: null,
+    },
   },
 
   edit({ attributes, setAttributes }) {
-    const { title, body, titleColor, bodyColor } = attributes;
+    const { title, body, titleColor, bodyColor, backgroundImage } = attributes;
 
     // custom functions
     function onChangeTitle(newTitle) {
@@ -50,6 +54,10 @@ registerBlockType("wpmarche/sample-block", {
       setAttributes({ bodyColor: newColor });
     }
 
+    function onSelectImage(newImage) {
+      setAttributes({ backgroundImage: newImage.sizes.full.url });
+    }
+
     return [
       <InspectorControls style={{ marginBottom: "40px" }}>
         <PanelBody title={"Font Color Settings"}>
@@ -61,6 +69,25 @@ registerBlockType("wpmarche/sample-block", {
             <strong>Select a Body color:</strong>
           </p>
           <ColorPalette value={bodyColor} onChange={onBodyColorChange} />
+        </PanelBody>
+        <PanelBody title={"Background Image Settings"}>
+          <p>
+            <strong>Select a Background Image:</strong>
+          </p>
+          <MediaUpload
+            onSelect={onSelectImage}
+            type="image"
+            value={backgroundImage}
+            render={({ open }) => (
+              <IconButton
+                className="editor-media-placeholder__button is-button is-default is-large"
+                icon="upload"
+                onClick={open}
+              >
+                Background Image
+              </IconButton>
+            )}
+          />
         </PanelBody>
       </InspectorControls>,
       <div class="block-container">
