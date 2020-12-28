@@ -99,6 +99,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 
 var registerBlockType = wp.blocks.registerBlockType;
+var RichText = wp.editor.RichText;
 registerBlockType("wpmarche/sample-block", {
   title: "Sample Block",
   description: "Block to generate static content",
@@ -106,30 +107,61 @@ registerBlockType("wpmarche/sample-block", {
   category: "layout",
   // custom attributes
   attributes: {
-    author: {
-      type: "string"
+    title: {
+      type: "string",
+      source: "html",
+      selector: "h2"
+    },
+    body: {
+      type: "string",
+      source: "html",
+      selector: "p"
     }
   },
   edit: function edit(_ref) {
     var attributes = _ref.attributes,
         setAttributes = _ref.setAttributes;
+    var title = attributes.title,
+        body = attributes.body; // custom functions
 
-    // custom functions
-    var changeAuthorAttributes = function changeAuthorAttributes(event) {
+    function onChangeTitle(newTitle) {
       setAttributes({
-        author: event.target.value
+        title: newTitle
       });
-    };
+    }
 
-    return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("input", {
-      type: "text",
-      value: attributes.author,
-      onChange: changeAuthorAttributes
-    });
+    function onChangeBody(newBody) {
+      setAttributes({
+        body: newBody
+      });
+    }
+
+    return [Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+      class: "block-container"
+    }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(RichText, {
+      key: "editable",
+      tagName: "h2",
+      placeholder: "Your block Title",
+      value: title,
+      onChange: onChangeTitle
+    }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(RichText, {
+      key: "editable",
+      tagName: "p",
+      placeholder: "Your block Description",
+      value: body,
+      onChange: onChangeBody
+    }))];
   },
   save: function save(_ref2) {
     var attributes = _ref2.attributes;
-    return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("p", null, "Author Name : ", Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("i", null, attributes.author));
+    var title = attributes.title,
+        body = attributes.body;
+    return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+      class: "block-container"
+    }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("h2", null, title), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(RichText.Content, {
+      tagName: "p",
+      value: body
+    }));
   }
 });
 

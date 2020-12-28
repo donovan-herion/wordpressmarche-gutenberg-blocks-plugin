@@ -1,4 +1,5 @@
 const { registerBlockType } = wp.blocks;
+const { RichText } = wp.editor;
 
 registerBlockType("wpmarche/sample-block", {
   title: "Sample Block",
@@ -8,31 +9,58 @@ registerBlockType("wpmarche/sample-block", {
 
   // custom attributes
   attributes: {
-    author: {
+    title: {
       type: "string",
+      source: "html",
+      selector: "h2",
+    },
+    body: {
+      type: "string",
+      source: "html",
+      selector: "p",
     },
   },
 
   edit({ attributes, setAttributes }) {
-    // custom functions
-    const changeAuthorAttributes = (event) => {
-      setAttributes({ author: event.target.value });
-    };
+    const { title, body } = attributes;
 
-    return (
-      <input
-        type="text"
-        value={attributes.author}
-        onChange={changeAuthorAttributes}
-      />
-    );
+    // custom functions
+    function onChangeTitle(newTitle) {
+      setAttributes({ title: newTitle });
+    }
+
+    function onChangeBody(newBody) {
+      setAttributes({ body: newBody });
+    }
+
+    return [
+      <div class="block-container">
+        <RichText
+          key="editable"
+          tagName="h2"
+          placeholder="Your block Title"
+          value={title}
+          onChange={onChangeTitle}
+        />
+        <RichText
+          key="editable"
+          tagName="p"
+          placeholder="Your block Description"
+          value={body}
+          onChange={onChangeBody}
+        />
+      </div>,
+    ];
   },
 
   save({ attributes }) {
+    const { title, body } = attributes;
+
     return (
-      <p>
-        Author Name : <i>{attributes.author}</i>
-      </p>
+      <div class="block-container">
+        <h2>{title}</h2>
+        <RichText.Content tagName="p" value={body} />
+      </div>
     );
   },
 });

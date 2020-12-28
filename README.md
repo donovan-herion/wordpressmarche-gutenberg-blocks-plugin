@@ -1,47 +1,83 @@
-# Gutenberg from Scratch: How to Create and Set Attributes | Lesson 4
+# Gutenberg from Scratch: How to Use the RichText Markup Element | Lesson 5
 
-In this lesson I learned to render an editable input in the admin pannel through the edit method
+In this lesson we did what we had done in the previous lesson with the build-in RichText component
 
-In order to store the value I had to create a custom attribute and save its value through a custom function (which HAS TO be in the edit method)
+!!! Good to know | The RichText event onChange sends only the value in the event
 
-The way we retrieve and modify the author information is through the attributes props
+This component comes from the wp.editor (in js) but also needs to be called from our php as a dependency just like the wp-elements one
 
-in the edit method (admin side) I can modify and save my author attributes
+```php
+function wpmarche_gutenberg_blocks()
+{
+    wp_register_script('sample-block-js', plugins_url('build/index.js', __FILE__), array('wp-blocks', 'wp-editor'));
 
-In the save method (front end side) I can retrieve and display the author information as wanted.
+    register_block_type('wpmarche/sample-block', array(
+        'editor_script' => 'sample-block-js'
+    ));
+}
+add_action('init', 'wpmarche_gutenberg_blocks');
+```
 
 ```js
  // custom attributes
   attributes: {
-    author: {
+    title: {
       type: "string",
+      source: "html",
+      selector: "h2",
+    },
+    body: {
+      type: "string",
+      source: "html",
+      selector: "p",
     },
   },
 
   edit({ attributes, setAttributes }) {
-    // custom functions
-    const changeAuthorAttributes = (event) => {
-      setAttributes({ author: event.target.value });
-    };
+    const { title, body } = attributes;
 
-    return (
-      <input
-        type="text"
-        value={attributes.author}
-        onChange={changeAuthorAttributes}
-      />
-    );
+    // custom functions
+    function onChangeTitle(newTitle) {
+      setAttributes({ title: newTitle });
+    }
+
+    function onChangeBody(newBody) {
+      setAttributes({ body: newBody });
+    }
+
+    return [
+      <div class="block-container">
+        <RichText
+          key="editable"
+          tagName="h2"
+          placeholder="Your block Title"
+          value={title}
+          onChange={onChangeTitle}
+        />
+        <RichText
+          key="editable"
+          tagName="p"
+          placeholder="Your block Description"
+          value={body}
+          onChange={onChangeBody}
+        />
+      </div>,
+    ];
   },
 
   save({ attributes }) {
+    const { title, body } = attributes;
+
     return (
-      <p>
-        Author Name : <i>{attributes.author}</i>
-      </p>
+      <div class="block-container">
+        <h2>{title}</h2>
+        <RichText.Content tagName="p" value={body} />
+      </div>
     );
   },
+});
 ```
 
 ## Link to tutorial
 
-[Click here](https://www.youtube.com/watch?v=tML_46IPjcc&list=PLriKzYyLb28lHhftzU7Z_DJ32mvLy4KKH&index=5&ab_channel=AlessandroCastellani)
+[Click here](https://www.youtube.com/watch?v=_mLPsCDvK3Q&list=PLriKzYyLb28lHhftzU7Z_DJ32mvLy4KKH&index=6&ab_channel=AlessandroCastellani)
