@@ -1,6 +1,6 @@
 const { registerBlockType } = wp.blocks;
 const { RichText, InspectorControls, ColorPalette, MediaUpload } = wp.editor;
-const { PanelBody, IconButton } = wp.components;
+const { PanelBody, IconButton, RangeControl } = wp.components;
 
 registerBlockType("wpmarche/sample-block", {
   title: "Sample Block",
@@ -28,14 +28,30 @@ registerBlockType("wpmarche/sample-block", {
       type: "string",
       default: "black",
     },
-    backgroundImage: {
+    backgroundImageURL: {
       type: "string",
       default: null,
+    },
+    overlayColor: {
+      type: "string",
+      default: "black",
+    },
+    overlayOpacity: {
+      type: "number",
+      default: 0.3,
     },
   },
 
   edit({ attributes, setAttributes }) {
-    const { title, body, titleColor, bodyColor, backgroundImage } = attributes;
+    const {
+      title,
+      body,
+      titleColor,
+      bodyColor,
+      backgroundImageURL,
+      overlayColor,
+      overlayOpacity,
+    } = attributes;
 
     // custom functions
     function onChangeTitle(newTitle) {
@@ -55,7 +71,15 @@ registerBlockType("wpmarche/sample-block", {
     }
 
     function onSelectImage(newImage) {
-      setAttributes({ backgroundImage: newImage.sizes.full.url });
+      setAttributes({ backgroundImageURL: newImage.sizes.full.url });
+    }
+
+    function onOverlayColorChange(newColor) {
+      setAttributes({ overlayColor: newColor });
+    }
+
+    function onOverlayOpacityChange(newOpacity) {
+      setAttributes({ overlayOpacity: newOpacity });
     }
 
     return [
@@ -77,7 +101,7 @@ registerBlockType("wpmarche/sample-block", {
           <MediaUpload
             onSelect={onSelectImage}
             type="image"
-            value={backgroundImage}
+            value={backgroundImageURL}
             render={({ open }) => (
               <IconButton
                 className="editor-media-placeholder__button is-button is-default is-large"
@@ -88,9 +112,43 @@ registerBlockType("wpmarche/sample-block", {
               </IconButton>
             )}
           />
+          <div style={{ marginTop: "20px", marginBottom: "40px" }}>
+            <p>
+              <strong>Overlay Color:</strong>
+            </p>
+            <ColorPalette
+              value={overlayColor}
+              onChange={onOverlayColorChange}
+            />
+          </div>
+          <RangeControl
+            label={"Overlay Opacity"}
+            value={overlayOpacity}
+            onChange={onOverlayOpacityChange}
+            min={0}
+            max={1}
+            step={0.01}
+          />
         </PanelBody>
       </InspectorControls>,
-      <div class="block-container">
+      <div
+        class="block-container"
+        style={{
+          backgroundImage: `url(${backgroundImageURL})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
+        <div
+          className="block-overlay"
+          style={{
+            background: overlayColor,
+            opacity: overlayOpacity,
+            position: "absolute",
+            inset: "0px",
+          }}
+        ></div>
         <RichText
           key="editable"
           tagName="h2"
@@ -112,10 +170,36 @@ registerBlockType("wpmarche/sample-block", {
   },
 
   save({ attributes }) {
-    const { title, body, titleColor } = attributes;
+    const {
+      title,
+      body,
+      titleColor,
+      backgroundImageURL,
+      overlayColor,
+      overlayOpacity,
+    } = attributes;
 
     return (
-      <div class="block-container">
+      <div
+        class="block-container"
+        style={{
+          backgroundImage: `url(${backgroundImageURL})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          position: "relative",
+        }}
+      >
+        <div
+          className="block-overlay"
+          style={{
+            background: overlayColor,
+            opacity: overlayOpacity,
+            position: "absolute",
+            inset: "0px",
+          }}
+        ></div>
+
         <h2 style={{ color: titleColor }}>{title}</h2>
         <RichText.Content tagName="p" value={body} />
       </div>

@@ -106,7 +106,8 @@ var _wp$editor = wp.editor,
     MediaUpload = _wp$editor.MediaUpload;
 var _wp$components = wp.components,
     PanelBody = _wp$components.PanelBody,
-    IconButton = _wp$components.IconButton;
+    IconButton = _wp$components.IconButton,
+    RangeControl = _wp$components.RangeControl;
 registerBlockType("wpmarche/sample-block", {
   title: "Sample Block",
   description: "Block to generate static content",
@@ -132,9 +133,17 @@ registerBlockType("wpmarche/sample-block", {
       type: "string",
       default: "black"
     },
-    backgroundImage: {
+    backgroundImageURL: {
       type: "string",
       default: null
+    },
+    overlayColor: {
+      type: "string",
+      default: "black"
+    },
+    overlayOpacity: {
+      type: "number",
+      default: 0.3
     }
   },
   edit: function edit(_ref) {
@@ -144,7 +153,9 @@ registerBlockType("wpmarche/sample-block", {
         body = attributes.body,
         titleColor = attributes.titleColor,
         bodyColor = attributes.bodyColor,
-        backgroundImage = attributes.backgroundImage; // custom functions
+        backgroundImageURL = attributes.backgroundImageURL,
+        overlayColor = attributes.overlayColor,
+        overlayOpacity = attributes.overlayOpacity; // custom functions
 
     function onChangeTitle(newTitle) {
       setAttributes({
@@ -172,7 +183,19 @@ registerBlockType("wpmarche/sample-block", {
 
     function onSelectImage(newImage) {
       setAttributes({
-        backgroundImage: newImage.sizes.full.url
+        backgroundImageURL: newImage.sizes.full.url
+      });
+    }
+
+    function onOverlayColorChange(newColor) {
+      setAttributes({
+        overlayColor: newColor
+      });
+    }
+
+    function onOverlayOpacityChange(newOpacity) {
+      setAttributes({
+        overlayOpacity: newOpacity
       });
     }
 
@@ -193,7 +216,7 @@ registerBlockType("wpmarche/sample-block", {
     }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("p", null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("strong", null, "Select a Background Image:")), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(MediaUpload, {
       onSelect: onSelectImage,
       type: "image",
-      value: backgroundImage,
+      value: backgroundImageURL,
       render: function render(_ref2) {
         var open = _ref2.open;
         return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(IconButton, {
@@ -202,9 +225,38 @@ registerBlockType("wpmarche/sample-block", {
           onClick: open
         }, "Background Image");
       }
+    }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+      style: {
+        marginTop: "20px",
+        marginBottom: "40px"
+      }
+    }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("p", null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("strong", null, "Overlay Color:")), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(ColorPalette, {
+      value: overlayColor,
+      onChange: onOverlayColorChange
+    })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(RangeControl, {
+      label: "Overlay Opacity",
+      value: overlayOpacity,
+      onChange: onOverlayOpacityChange,
+      min: 0,
+      max: 1,
+      step: 0.01
     }))), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
-      class: "block-container"
-    }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(RichText, {
+      class: "block-container",
+      style: {
+        backgroundImage: "url(".concat(backgroundImageURL, ")"),
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat"
+      }
+    }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+      className: "block-overlay",
+      style: {
+        background: overlayColor,
+        opacity: overlayOpacity,
+        position: "absolute",
+        inset: "0px"
+      }
+    }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(RichText, {
       key: "editable",
       tagName: "h2",
       placeholder: "Your block Title",
@@ -228,10 +280,28 @@ registerBlockType("wpmarche/sample-block", {
     var attributes = _ref3.attributes;
     var title = attributes.title,
         body = attributes.body,
-        titleColor = attributes.titleColor;
+        titleColor = attributes.titleColor,
+        backgroundImageURL = attributes.backgroundImageURL,
+        overlayColor = attributes.overlayColor,
+        overlayOpacity = attributes.overlayOpacity;
     return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
-      class: "block-container"
-    }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("h2", {
+      class: "block-container",
+      style: {
+        backgroundImage: "url(".concat(backgroundImageURL, ")"),
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        position: "relative"
+      }
+    }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+      className: "block-overlay",
+      style: {
+        background: overlayColor,
+        opacity: overlayOpacity,
+        position: "absolute",
+        inset: "0px"
+      }
+    }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("h2", {
       style: {
         color: titleColor
       }

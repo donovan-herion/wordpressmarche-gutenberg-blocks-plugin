@@ -1,50 +1,29 @@
-# Gutenberg from Scratch: Create a Custom Media Uploader | Lesson 7
+# Gutenberg from Scratch: Background Image + Front-end Style and Editor Style | Lesson 8 & 9
 
-In this lesson we simply added a media loader on the block editing sidebar through a new panelbody
+In these lessons we simply added the previously added backgroundImageURL to the div itself
 
-this is what we changed since last lesson
+We also added an overlay div to control opacity of the backgroundImage
 
-```js
-const { previousOnes... + MediaUpload } = wp.editor;
+This was added in the PanelBody component
 
-//custom attributes
-backgroundImage: {
-      type: "string",
-      default: null,
-    }
+The way we retrieve information from there is through the states.
 
-//loads the state in edit function
-const { previousOnes... + backgroundImage } = attributes;
+///////
 
+styles on front and back end can be totally different
 
-//added onChange functions
-function onSelectImage(newImage) {
-  setAttributes({ backgroundImage: newImage.sizes.full.url });
-}
+Backend (EDIT styles) stores the classes into the base style-editor.scss file (in 2020 theme)
 
-//added one panel body
+Frontend (SAVE styles) stores the classes into the sass block block.scss file (in 2020 theme)
 
-   <PanelBody title={"Background Image Settings"}>
-          <p>
-            <strong>Select a Background Image:</strong>
-          </p>
-          <MediaUpload
-          onSelect={onSelectImage}
-          type="image"
-          value={backgroundImage}
-          render={({ open }) => (
-            <IconButton
-              className="editor-media-placeholder__button is-button is-default is-large"
-              icon="upload"
-              onClick={open}
-            >
-              Background Image
-            </IconButton>
-          )}
-        />
-    </PanelBody>
+//////
+
+The command to compile the scss is (in 2020 theme package.json config)
+
+```bash
+npm run watch
 ```
 
 ## Link to tutorial
 
-[Click here](https://www.youtube.com/watch?v=QHpUELUrwpo&list=PLriKzYyLb28lHhftzU7Z_DJ32mvLy4KKH&index=8&ab_channel=AlessandroCastellani)
+[Click here](https://www.youtube.com/watch?v=TD51P6HRLcA&list=PLriKzYyLb28lHhftzU7Z_DJ32mvLy4KKH&index=10&ab_channel=AlessandroCastellani)
