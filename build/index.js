@@ -99,7 +99,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 
 var registerBlockType = wp.blocks.registerBlockType;
-var RichText = wp.editor.RichText;
+var _wp$editor = wp.editor,
+    RichText = _wp$editor.RichText,
+    InspectorControls = _wp$editor.InspectorControls,
+    ColorPalette = _wp$editor.ColorPalette;
+var PanelBody = wp.components.PanelBody;
 registerBlockType("wpmarche/sample-block", {
   title: "Sample Block",
   description: "Block to generate static content",
@@ -116,13 +120,23 @@ registerBlockType("wpmarche/sample-block", {
       type: "string",
       source: "html",
       selector: "p"
+    },
+    titleColor: {
+      type: "string",
+      default: "black"
+    },
+    bodyColor: {
+      type: "string",
+      default: "black"
     }
   },
   edit: function edit(_ref) {
     var attributes = _ref.attributes,
         setAttributes = _ref.setAttributes;
     var title = attributes.title,
-        body = attributes.body; // custom functions
+        body = attributes.body,
+        titleColor = attributes.titleColor,
+        bodyColor = attributes.bodyColor; // custom functions
 
     function onChangeTitle(newTitle) {
       setAttributes({
@@ -136,29 +150,64 @@ registerBlockType("wpmarche/sample-block", {
       });
     }
 
-    return [Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+    function onTitleColorChange(newColor) {
+      setAttributes({
+        titleColor: newColor
+      });
+    }
+
+    function onBodyColorChange(newColor) {
+      setAttributes({
+        bodyColor: newColor
+      });
+    }
+
+    return [Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(InspectorControls, {
+      style: {
+        marginBottom: "40px"
+      }
+    }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelBody, {
+      title: "Font Color Settings"
+    }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("p", null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("strong", null, "Select a Title color:")), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(ColorPalette, {
+      value: titleColor,
+      onChange: onTitleColorChange
+    }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("p", null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("strong", null, "Select a Body color:")), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(ColorPalette, {
+      value: bodyColor,
+      onChange: onBodyColorChange
+    }))), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
       class: "block-container"
     }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(RichText, {
       key: "editable",
       tagName: "h2",
       placeholder: "Your block Title",
       value: title,
-      onChange: onChangeTitle
+      onChange: onChangeTitle,
+      style: {
+        color: titleColor
+      }
     }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(RichText, {
       key: "editable",
       tagName: "p",
       placeholder: "Your block Description",
       value: body,
-      onChange: onChangeBody
+      onChange: onChangeBody,
+      style: {
+        color: bodyColor
+      }
     }))];
   },
   save: function save(_ref2) {
     var attributes = _ref2.attributes;
     var title = attributes.title,
-        body = attributes.body;
+        body = attributes.body,
+        titleColor = attributes.titleColor;
     return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
       class: "block-container"
-    }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("h2", null, title), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(RichText.Content, {
+    }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("h2", {
+      style: {
+        color: titleColor
+      }
+    }, title), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(RichText.Content, {
       tagName: "p",
       value: body
     }));

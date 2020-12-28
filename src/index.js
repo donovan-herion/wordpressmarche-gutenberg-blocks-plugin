@@ -1,5 +1,6 @@
 const { registerBlockType } = wp.blocks;
-const { RichText } = wp.editor;
+const { RichText, InspectorControls, ColorPalette } = wp.editor;
+const { PanelBody } = wp.components;
 
 registerBlockType("wpmarche/sample-block", {
   title: "Sample Block",
@@ -19,10 +20,18 @@ registerBlockType("wpmarche/sample-block", {
       source: "html",
       selector: "p",
     },
+    titleColor: {
+      type: "string",
+      default: "black",
+    },
+    bodyColor: {
+      type: "string",
+      default: "black",
+    },
   },
 
   edit({ attributes, setAttributes }) {
-    const { title, body } = attributes;
+    const { title, body, titleColor, bodyColor } = attributes;
 
     // custom functions
     function onChangeTitle(newTitle) {
@@ -33,7 +42,27 @@ registerBlockType("wpmarche/sample-block", {
       setAttributes({ body: newBody });
     }
 
+    function onTitleColorChange(newColor) {
+      setAttributes({ titleColor: newColor });
+    }
+
+    function onBodyColorChange(newColor) {
+      setAttributes({ bodyColor: newColor });
+    }
+
     return [
+      <InspectorControls style={{ marginBottom: "40px" }}>
+        <PanelBody title={"Font Color Settings"}>
+          <p>
+            <strong>Select a Title color:</strong>
+          </p>
+          <ColorPalette value={titleColor} onChange={onTitleColorChange} />
+          <p>
+            <strong>Select a Body color:</strong>
+          </p>
+          <ColorPalette value={bodyColor} onChange={onBodyColorChange} />
+        </PanelBody>
+      </InspectorControls>,
       <div class="block-container">
         <RichText
           key="editable"
@@ -41,6 +70,7 @@ registerBlockType("wpmarche/sample-block", {
           placeholder="Your block Title"
           value={title}
           onChange={onChangeTitle}
+          style={{ color: titleColor }}
         />
         <RichText
           key="editable"
@@ -48,17 +78,18 @@ registerBlockType("wpmarche/sample-block", {
           placeholder="Your block Description"
           value={body}
           onChange={onChangeBody}
+          style={{ color: bodyColor }}
         />
       </div>,
     ];
   },
 
   save({ attributes }) {
-    const { title, body } = attributes;
+    const { title, body, titleColor } = attributes;
 
     return (
       <div class="block-container">
-        <h2>{title}</h2>
+        <h2 style={{ color: titleColor }}>{title}</h2>
         <RichText.Content tagName="p" value={body} />
       </div>
     );

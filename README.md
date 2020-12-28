@@ -1,51 +1,32 @@
-# Gutenberg from Scratch: How to Use the RichText Markup Element | Lesson 5
+# Gutenberg from Scratch: How to Use the ColorPalette Element | Lesson 6
 
-In this lesson we did what we had done in the previous lesson with the build-in RichText component
-
-!!! Good to know | The RichText event onChange sends only the value in the event
-
-This component comes from the wp.editor (in js) but also needs to be called from our php as a dependency just like the wp-elements one
-
-```php
-function wpmarche_gutenberg_blocks()
-{
-    wp_register_script('sample-block-js', plugins_url('build/index.js', __FILE__), array('wp-blocks', 'wp-editor'));
-
-    register_block_type('wpmarche/sample-block', array(
-        'editor_script' => 'sample-block-js'
-    ));
-}
-add_action('init', 'wpmarche_gutenberg_blocks');
-```
+Added a few dependencies
 
 ```js
- // custom attributes
-  attributes: {
-    title: {
-      type: "string",
-      source: "html",
-      selector: "h2",
-    },
-    body: {
-      type: "string",
-      source: "html",
-      selector: "p",
-    },
-  },
+const { RichText, InspectorControls, ColorPalette } = wp.editor;
+const { PanelBody } = wp.components;
 
-  edit({ attributes, setAttributes }) {
-    const { title, body } = attributes;
+//has to be added in php dependency array too
+```
 
-    // custom functions
-    function onChangeTitle(newTitle) {
-      setAttributes({ title: newTitle });
-    }
+added a few states to manage color from block editing sidebar through the ColorPalette component
 
-    function onChangeBody(newBody) {
-      setAttributes({ body: newBody });
-    }
+The InspectorControls has to be added together with the PanelBody to display the ColorPalette
 
-    return [
+```js
+ return [
+      <InspectorControls style={{ marginBottom: "40px" }}>
+        <PanelBody title={"Font Color Settings"}>
+          <p>
+            <strong>Select a Title color:</strong>
+          </p>
+          <ColorPalette value={titleColor} onChange={onTitleColorChange} />
+          <p>
+            <strong>Select a Body color:</strong>
+          </p>
+          <ColorPalette value={bodyColor} onChange={onBodyColorChange} />
+        </PanelBody>
+      </InspectorControls>,
       <div class="block-container">
         <RichText
           key="editable"
@@ -53,6 +34,7 @@ add_action('init', 'wpmarche_gutenberg_blocks');
           placeholder="Your block Title"
           value={title}
           onChange={onChangeTitle}
+          style={{ color: titleColor }}
         />
         <RichText
           key="editable"
@@ -60,24 +42,14 @@ add_action('init', 'wpmarche_gutenberg_blocks');
           placeholder="Your block Description"
           value={body}
           onChange={onChangeBody}
+          style={{ color: bodyColor }}
         />
       </div>,
     ];
   },
 
-  save({ attributes }) {
-    const { title, body } = attributes;
-
-    return (
-      <div class="block-container">
-        <h2>{title}</h2>
-        <RichText.Content tagName="p" value={body} />
-      </div>
-    );
-  },
-});
 ```
 
 ## Link to tutorial
 
-[Click here](https://www.youtube.com/watch?v=_mLPsCDvK3Q&list=PLriKzYyLb28lHhftzU7Z_DJ32mvLy4KKH&index=6&ab_channel=AlessandroCastellani)
+[Click here](https://www.youtube.com/watch?v=wj6HkXMplNY&list=PLriKzYyLb28lHhftzU7Z_DJ32mvLy4KKH&index=7&ab_channel=AlessandroCastellani)
